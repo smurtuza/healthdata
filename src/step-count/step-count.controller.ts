@@ -16,7 +16,7 @@ export class StepCountController {
     private readonly stepCountService: StepCountService,
   ) {}
 
-  @ApiBody({ type: StepCountDto, description: 'Step Count Data' })
+  @ApiBody({ type: StepCountDto, description: 'Step Count Data',isArray:true })
   @Post()
   async recordStepCount(@Body() stepCountData: StepCountDto[]): Promise<void> {
     const userId = 'user123'; // Replace with your authentication logic to get the user ID

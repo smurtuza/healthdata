@@ -6,6 +6,7 @@ import { SleepController } from './sleep/sleep.controller';
 import { SleepSchema } from './sleep/sleep.schema';
 import { RecordSleepHandler } from './sleep/commands/record-sleep.handler';
 import { RecordSleepCommand } from './sleep/commands/record-sleep.command';
+import {GetSleepQuery} from './sleep/queries/get-sleep.query';
 import { GetSleepHandler } from './sleep/queries/get-sleep.handler';
 import { SleepService } from './sleep/sleep.service';
 import { StepCountController } from './step-count/step-count.controller';
@@ -28,6 +29,7 @@ import { StepCountService } from './step-count/step-count.service';
     RecordSleepHandler,
     RecordSleepCommand,
     GetSleepHandler,
+    GetSleepQuery,
     StepCountService,
     RecordStepCountHandler,
     RecordStepCountCommand,
