@@ -11,8 +11,8 @@ async function bootstrap() {
 
   // Swagger configuration
   const options = new DocumentBuilder()
-    .setTitle('Sleep API')
-    .setDescription('API documentation for Sleep App')
+    .setTitle('Health Data App')
+    .setDescription('API documentation for Health Data App')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);
