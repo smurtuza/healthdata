@@ -13,13 +13,13 @@ import { StepCountController } from './step-count/step-count.controller';
 import { StepCountSchema } from './step-count/step-count.schema';
 import { RecordStepCountHandler } from './step-count/commands/record-step-count.handler';
 import { RecordStepCountCommand } from './step-count/commands/record-step-count.command';
-import { GetStepCountHandler } from './step-count/queries/get-step-count.handler'; //pai Correct import statement
-import { GetStepCountQuery } from './step-count/queries/get-step-count.query';
+import { GetStepCountHandler,GetLatestStepCountHandler } from './step-count/queries/get-step-count.handler'; //pai Correct import statement
+import { GetStepCountQuery,GetLatestStepCountQuery } from './step-count/queries/get-step-count.query';
 import { StepCountService } from './step-count/step-count.service';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/sleep_db'),
+    MongooseModule.forRoot('mongodb+srv://microuser:microuser@cluster0.szm8xo6.mongodb.net/sleep_db'),
     CqrsModule,
     MongooseModule.forFeature([{ name: 'Sleep', schema: SleepSchema },{ name: 'StepCount', schema: StepCountSchema }]),
   ],
@@ -34,7 +34,9 @@ import { StepCountService } from './step-count/step-count.service';
     RecordStepCountHandler,
     RecordStepCountCommand,
     GetStepCountQuery,
+    GetLatestStepCountQuery,
     GetStepCountHandler,
+    GetLatestStepCountHandler
   ],
 })
 export class AppModule {}

@@ -5,6 +5,5 @@ export const StepCountSchema = new mongoose.Schema({
   userId: String,
   date: Date,
   stepCount: { type: Number, required: true },
-  count: Number,
   source: String,
 });

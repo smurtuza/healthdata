@@ -2,7 +2,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GetStepCountQuery } from './get-step-count.query';
+import { GetStepCountQuery ,GetLatestStepCountQuery} from './get-step-count.query';
 
 @QueryHandler(GetStepCountQuery)
 export class GetStepCountHandler implements IQueryHandler<GetStepCountQuery> {
@@ -39,5 +39,24 @@ export class GetStepCountHandler implements IQueryHandler<GetStepCountQuery> {
     }
 
     return queryBuilder.exec();
+  }
+}
+
+@QueryHandler(GetLatestStepCountQuery)
+export class GetLatestStepCountHandler implements IQueryHandler<GetLatestStepCountQuery> {
+  constructor(
+    @InjectModel('StepCount')
+    private readonly stepCountModel: Model<any>,
+  ) {}
+
+  async execute(query: GetLatestStepCountQuery): Promise<any> {
+    const { userId } = query;
+
+    const stepCount = await this.stepCountModel
+      .findOne({ userId })
+      .sort({ date: 'desc' })
+      .exec();
+
+    return stepCount;
   }
 }

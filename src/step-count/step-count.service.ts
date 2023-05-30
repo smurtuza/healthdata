@@ -1,7 +1,7 @@
 // src/step-count/step-count.service.ts
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { GetStepCountQuery } from './queries/get-step-count.query';
+import { GetLatestStepCountQuery, GetStepCountQuery } from './queries/get-step-count.query';
 
 @Injectable()
 export class StepCountService {
@@ -10,4 +10,9 @@ export class StepCountService {
   async getStepCount(query: GetStepCountQuery): Promise<any> {
     return this.queryBus.execute(query);
   }
+
+  async getLatestStepCount(query: GetLatestStepCountQuery): Promise<any> {
+    return this.queryBus.execute(query);
+  }
+
 }

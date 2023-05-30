@@ -10,3 +10,8 @@ export class GetStepCountQuery {
     ) {}
   }
   
+export class GetLatestStepCountQuery {
+  constructor(
+    public readonly userId: string
+  ) {}
+}

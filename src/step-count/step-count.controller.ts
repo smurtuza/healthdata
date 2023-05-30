@@ -3,7 +3,7 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { StepCountDto } from './dto/step-count.dto';
 import { RecordStepCountCommand } from './commands/record-step-count.command';
-import { GetStepCountQuery } from './queries/get-step-count.query';
+import { GetLatestStepCountQuery, GetStepCountQuery } from './queries/get-step-count.query';
 import { ApiTags, ApiOperation, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { StepCountService } from './step-count.service';
 
@@ -43,4 +43,16 @@ export class StepCountController {
     const query = new GetStepCountQuery(userId, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source, page, limit);
     return this.stepCountService.getStepCount(query);
   }
+
+
+  @ApiOperation({ summary: 'Get latest step count data' })
+  @ApiQuery({ name: 'userId', required: true })
+  @Get('/latest')
+  async getLatestStepCount(
+    @Query('userId') userId: string,
+  ): Promise<any> {
+    const query = new GetLatestStepCountQuery(userId);
+    return this.stepCountService.getLatestStepCount(query);
+  }
+
 }
