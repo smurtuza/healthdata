@@ -1,0 +1,32 @@
+service: HealthData
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ap-south-1
+  profile: default
+  # memorySize: 256 # optional, in MB, default is 1024
+  # stage: dev
+
+plugins:
+  - serverless-offline
+
+package:
+  # artifact: "./dist/main.zip"
+
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: "{proxy+}"
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+    httpPort: 3000

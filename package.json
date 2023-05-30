@@ -10,7 +10,7 @@
     "build:webpack": "nest build --webpack",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:sls":"npx serverless offline",
+    "start:sls":"yarn build:webpack && npx serverless offline",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
