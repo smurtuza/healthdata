@@ -54,7 +54,7 @@ export class GetLatestStepCountHandler implements IQueryHandler<GetLatestStepCou
 
     const stepCount = await this.stepCountModel
       .findOne({ userId })
-      .sort({ date: 'desc' })
+      .sort({ endDate: 'desc' })
       .exec();
 
     return stepCount;
