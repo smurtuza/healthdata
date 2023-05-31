@@ -10,14 +10,15 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-plugin-optimize
 
 package:
-  # artifact: "./dist/main.zip"
+  artifact: "./dist/main.zip"
 
 
 functions:
   main:
-    handler: dist/main.handler
+    handler: main.handler
     events:
       - http:
           method: ANY
@@ -30,3 +31,5 @@ custom:
   serverless-offline:
     noPrependStageInUrl: true
     httpPort: 3000
+  optimize:
+    external: ['swagger-ui-dist']

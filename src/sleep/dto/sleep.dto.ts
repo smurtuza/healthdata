@@ -1,32 +1,69 @@
-// src/sleep/dto/sleep.dto.ts
-import { IsDateString, IsNumber, IsEnum, IsString } from 'class-validator';
+// apple-health.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { Date } from 'mongoose';
-
-enum SleepQuality {
-  POOR = 'poor',
-  FAIR = 'fair',
-  GOOD = 'good',
-}
+import { IsString, IsDate, IsNumber, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class SleepDto {
-  @ApiProperty({ example: '2023-05-25T08:00:00Z' })
-  @IsDateString()
-  readonly date: Date;
+  @ApiProperty({ example: 'Apple Watch', description: 'The data source' })
+  @IsString()
+  source: string;
 
-  @ApiProperty({ example: 8 })
+  @ApiProperty({ example: '2023-05-25T22:00:00Z', description: 'The start date' })
+  @IsDate()
+  startDate: Date;
+
+  @ApiProperty({ example: '2023-05-26T06:00:00Z', description: 'The end date' })
+  @IsDate()
+  endDate: Date;
+
+  @ApiProperty({ example: 28800, description: 'The duration in seconds' })
   @IsNumber()
-  readonly hours: number;
+  duration: number;
 
-  @ApiProperty({ enum: SleepQuality, example: SleepQuality.GOOD })
-  @IsEnum(SleepQuality)
-  readonly quality: SleepQuality;
+  @ApiProperty({
+    isArray: true,
+    example: [
+      {
+        type: 'InBed',
+        startDate: '2023-05-25T22:00:00Z',
+        endDate: '2023-05-26T06:00:00Z',
+        duration: 28800,
+      },
+      {
+        type: 'Asleep',
+        startDate: '2023-05-25T23:00:00Z',
+        endDate: '2023-05-26T05:00:00Z',
+        duration: 25200,
+      },
+      {
+        type: 'Restless',
+        startDate: '2023-05-26T02:00:00Z',
+        endDate: '2023-05-26T02:30:00Z',
+        duration: 1800,
+      },
+    ],
+    description: 'The sleep analysis data',
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SleepAnalysisDto)
+  sleepAnalysis: SleepAnalysisDto[];
+}
 
-  @ApiProperty({ example: 'user123' })
+export class SleepAnalysisDto {
+  @ApiProperty({ example: 'InBed', description: 'The sleep analysis type' })
   @IsString()
-  readonly userId: string;
+  type: string;
 
-  @ApiProperty({ example: 'Apple Health' })
-  @IsString()
-  readonly source: string;
+  @ApiProperty({ example: '2023-05-25T22:00:00Z', description: 'The start date' })
+  @IsDate()
+  startDate: Date;
+
+  @ApiProperty({ example: '2023-05-26T06:00:00Z', description: 'The end date' })
+  @IsDate()
+  endDate: Date;
+
+  @ApiProperty({ example: 28800, description: 'The duration in seconds' })
+  @IsNumber()
+  duration: number;
 }
