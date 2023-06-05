@@ -14,6 +14,8 @@ async function bootstrap() {
     .setTitle('Health Data App')
     .setDescription('API documentation for Health Data App')
     .setVersion('1.0')
+    .addServer('http://localhost:3000', 'Local Development')
+    .addServer('https://83jwgd1yw4.execute-api.ap-south-1.amazonaws.com/dev/', 'lambda')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

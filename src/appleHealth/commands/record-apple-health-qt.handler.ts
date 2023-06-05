@@ -12,13 +12,13 @@ export class RecordAppleHealthQtHandler implements ICommandHandler<RecordAppleHe
   ) {}
 
   async execute(command: RecordAppleHealthQtCommand): Promise<void> {
-    const { userId, caloriesData, appleHealthQtModel } = command;
+    const { userId, appleHealthData, appleHealthQtModel } = command;
 
-    const calories = caloriesData.map((data) => ({
+    const healthData = appleHealthData.map((data) => ({
       userId,
       ...data,
     }));
 
-    await appleHealthQtModel.create(calories);
+    await appleHealthQtModel.create(healthData);
   }
 }

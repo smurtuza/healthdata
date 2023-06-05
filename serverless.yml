@@ -13,19 +13,21 @@ plugins:
   - serverless-plugin-optimize
 
 package:
-  artifact: "./dist/main.zip"
+  # artifact: "./dist/main.zip"
 
 
 functions:
   main:
-    handler: main.handler
+    handler: dist/main.handler
     events:
       - http:
           method: ANY
           path: /
+          cors: true
       - http:
           method: ANY
           path: "{proxy+}"
+          cors: true
 
 custom:
   serverless-offline:

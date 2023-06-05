@@ -4,7 +4,7 @@ import { AppleHealthQtDto } from "../dto/apple-health-qt.dto";
 export class RecordAppleHealthQtCommand {
     constructor(
       public readonly userId: string,
-      public readonly caloriesData: AppleHealthQtDto[],
+      public readonly appleHealthData: AppleHealthQtDto[],
       public readonly appleHealthQtModel: Model<any>,
     ) {}
   }

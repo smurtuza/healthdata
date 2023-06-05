@@ -1,11 +1,12 @@
 // src/step-count/step-count.controller.ts
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query ,ValidationPipe} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { StepCountDto } from './dto/step-count.dto';
 import { RecordStepCountCommand } from './commands/record-step-count.command';
 import { GetLatestStepCountQuery, GetStepCountQuery } from './queries/get-step-count.query';
 import { ApiTags, ApiOperation, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { StepCountService } from './step-count.service';
+import { RecordStepCountDto } from './dto/record-step-count.dto';
 
 @ApiTags('step-count')
 @Controller('step-count')
@@ -16,11 +17,19 @@ export class StepCountController {
     private readonly stepCountService: StepCountService,
   ) {}
 
-  @ApiBody({ type: StepCountDto, description: 'Step Count Data',isArray:true })
+  @ApiBody({ type: RecordStepCountDto, description: 'Step Count Data',isArray:true })
   @Post()
-  async recordStepCount(@Body() stepCountData: StepCountDto[]): Promise<void> {
-    const userId = 'user123'; // Replace with your authentication logic to get the user ID
-    const command = new RecordStepCountCommand(userId, stepCountData);
+  async recordStepCount(@Body(ValidationPipe) body: RecordStepCountDto): Promise<void> {
+    const { userId, data } = body;
+
+    // const data = data.map((item) => ([{
+    //   source: item.source,
+    //   startDate: item.startDate,
+    //   endDate: item.endDate,
+    //   value: item.value,
+    // }]));
+    // const userId = 'user123'; // Replace with your authentication logic to get the user ID
+    const command = new RecordStepCountCommand(userId, data);
     await this.commandBus.execute(command);
   }
 
