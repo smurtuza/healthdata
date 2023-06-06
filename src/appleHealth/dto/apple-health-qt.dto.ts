@@ -4,8 +4,8 @@ import { IsDateString, IsNumber, IsString } from 'class-validator';
 import { Date } from 'mongoose';
 
 export class AppleHealthQtDto {
-  @ApiProperty({ example: 'user123' })
-  @IsString()
+  // @ApiProperty({ example: 'user123' })
+  // @IsString()
   userId: String;
 
   @ApiProperty({ example: '2023-05-25T08:00:00Z' })

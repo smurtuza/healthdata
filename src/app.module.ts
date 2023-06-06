@@ -4,10 +4,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
 import { SleepModule } from './sleep/sleep.module';
 import { StepCountModule } from './step-count/step-count.module';
-import { CaloriesModule } from './calories/calories.module';
-import { OxygenSaturationModule } from './appleHealth/oxygen-saturation.module';
-import { HeartRateModule } from './appleHealth/heart-rate.module';
-import { BloodGlucoseModule } from './appleHealth/blood-glucose.module';
+import { CaloriesModule } from './appleHealth/calories/calories.module';
+import { OxygenSaturationModule } from './appleHealth/oxygen-saturation/oxygen-saturation.module';
+import { HeartRateModule } from './appleHealth/heart-rate/heart-rate.module';
+import { BloodGlucoseModule } from './appleHealth/blood-glucose/blood-glucose.module';
 
 @Module({
   imports: [

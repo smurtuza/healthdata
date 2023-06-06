@@ -1,34 +1,37 @@
 // src/step-count/step-count.controller.ts
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Injectable, Post, Query, ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
-
-import { AppleHealthQtDto } from './dto/apple-health-qt.dto';
-
-import { RecordAppleHealthQtCommand } from './commands/record-apple-health-qt.command';
-
-import { GetAppleHealthQtQuery, GetLatestAppleHealthQtQuery } from './queries/get-apple-health-qt.query';
-import { AppleHealthQtService } from './apple-health-qt.service';
 import { Model } from 'mongoose';
 
-@ApiTags('bloodGlucose')
-@Controller('blood-glucose')
-export class BloodGlucoseController {
+import { AppleHealthQtDto } from '../dto/apple-health-qt.dto';
+import { RecordAppleHealthQtDto } from '../dto/record-apple-health-qt.dto';
+
+
+import { RecordAppleHealthQtCommand } from '../commands/record-apple-health-qt.command';
+
+import { GetAppleHealthQtQuery, GetLatestAppleHealthQtQuery } from '../queries/get-apple-health-qt.query';
+import { AppleHealthQtService } from '../apple-health-qt.service';
+
+@ApiTags('heartRate')
+@Controller('heart-rate')
+export class HeartRateController {
   constructor(
-    @InjectModel('BloodGlucose') 
-    private readonly BloodGlucoseModel: Model<any>,
+    @InjectModel('HearRate')
+    private readonly heartRateModel: Model<any>,
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private readonly BloodGlucoseService: AppleHealthQtService,
+    private readonly hearRateService: AppleHealthQtService,
   ) {}
 
   @ApiBody({ type: AppleHealthQtDto, description: 'Calories Burnt Data',isArray:true })
   @Post()
-  async recordBloodGlucose(@Body() bloodGlucoseData: AppleHealthQtDto[]): Promise<void> {
-    const appleHealthQtModel = this.BloodGlucoseModel
-    const userId = 'user123'; // Replace with your authentication logic to get the user ID
-    const command = new RecordAppleHealthQtCommand(userId, bloodGlucoseData, appleHealthQtModel);
+  async recordOxygenSaturation(@Body() body:RecordAppleHealthQtDto ): Promise<void> {
+    const appleHealthQtModel = this.heartRateModel
+    const {userId, data} = body
+    // const userId = 'user123'; // Replace with your authentication logic to get the user ID
+    const command = new RecordAppleHealthQtCommand(userId, data,appleHealthQtModel);
     await this.commandBus.execute(command);
   }
 
@@ -40,7 +43,7 @@ export class BloodGlucoseController {
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'limit', required: false })
   @Get()
-  async getBloodGlucose(
+  async getOxygenSaturation(
     @Query('userId') userId: string,
     @Query('startDate') startDate: string,
     @Query('endDate') endDate: string,
@@ -48,9 +51,9 @@ export class BloodGlucoseController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ): Promise<any> {
-    const appleHealthQtModel = this.BloodGlucoseModel
+    const appleHealthQtModel = this.heartRateModel
     const query = new GetAppleHealthQtQuery(appleHealthQtModel,userId, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source, page, limit);
-    return this.BloodGlucoseService.getAppleHealthQt(query);
+    return this.hearRateService.getAppleHealthQt(query);
   }
 
   @ApiOperation({ summary: 'Get latest calories burnt data' })
@@ -59,9 +62,9 @@ export class BloodGlucoseController {
   async getLatestOxygenSaturation(
     @Query('userId') userId: string,
   ): Promise<any> {
-    const appleHealthQtModel = this.BloodGlucoseModel
+    const appleHealthQtModel = this.heartRateModel
     const query = new GetLatestAppleHealthQtQuery(appleHealthQtModel,userId);
-    return this.BloodGlucoseService.getLatestAppleHealthQt(query);
+    return this.hearRateService.getLatestAppleHealthQt(query);
   }
 
 }

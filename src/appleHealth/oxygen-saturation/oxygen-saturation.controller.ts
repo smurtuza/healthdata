@@ -1,34 +1,37 @@
 // src/step-count/step-count.controller.ts
-import { Body, Controller, Get, Injectable, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query,ValidationPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
+
+import { AppleHealthQtDto } from '../dto/apple-health-qt.dto';
+import { RecordAppleHealthQtDto } from '../dto/record-apple-health-qt.dto';
+
+
+import { RecordAppleHealthQtCommand } from '../commands/record-apple-health-qt.command';
+
+import { GetAppleHealthQtQuery, GetLatestAppleHealthQtQuery } from '../queries/get-apple-health-qt.query';
+import { AppleHealthQtService } from '../apple-health-qt.service';
 import { Model } from 'mongoose';
 
-import { AppleHealthQtDto } from './dto/apple-health-qt.dto';
-
-import { RecordAppleHealthQtCommand } from './commands/record-apple-health-qt.command';
-
-import { GetAppleHealthQtQuery, GetLatestAppleHealthQtQuery } from './queries/get-apple-health-qt.query';
-import { AppleHealthQtService } from './apple-health-qt.service';
-
-@ApiTags('heartRate')
-@Controller('heart-rate')
-export class HeartRateController {
+@ApiTags('oxygenSaturation')
+@Controller('oxygen-saturation')
+export class OxygenSaturationController {
   constructor(
-    @InjectModel('HearRate')
-    private readonly heartRateModel: Model<any>,
+    @InjectModel('OxygenSaturation') 
+    private readonly OxygenSaturationModel: Model<any>,
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private readonly hearRateService: AppleHealthQtService,
+    private readonly oxygenSaturationService: AppleHealthQtService,
   ) {}
 
   @ApiBody({ type: AppleHealthQtDto, description: 'Calories Burnt Data',isArray:true })
   @Post()
-  async recordOxygenSaturation(@Body() oxygenSaturationData: AppleHealthQtDto[]): Promise<void> {
-    const appleHealthQtModel = this.heartRateModel
-    const userId = 'user123'; // Replace with your authentication logic to get the user ID
-    const command = new RecordAppleHealthQtCommand(userId, oxygenSaturationData,appleHealthQtModel);
+  async recordOxygenSaturation(@Body(ValidationPipe) body: RecordAppleHealthQtDto): Promise<void> {
+    const appleHealthQtModel = this.OxygenSaturationModel
+    const {userId, data} = body
+    // const userId = 'user123'; // Replace with your authentication logic to get the user ID
+    const command = new RecordAppleHealthQtCommand(userId, data, appleHealthQtModel);
     await this.commandBus.execute(command);
   }
 
@@ -48,9 +51,9 @@ export class HeartRateController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ): Promise<any> {
-    const appleHealthQtModel = this.heartRateModel
+    const appleHealthQtModel = this.OxygenSaturationModel
     const query = new GetAppleHealthQtQuery(appleHealthQtModel,userId, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source, page, limit);
-    return this.hearRateService.getAppleHealthQt(query);
+    return this.oxygenSaturationService.getAppleHealthQt(query);
   }
 
   @ApiOperation({ summary: 'Get latest calories burnt data' })
@@ -59,9 +62,9 @@ export class HeartRateController {
   async getLatestOxygenSaturation(
     @Query('userId') userId: string,
   ): Promise<any> {
-    const appleHealthQtModel = this.heartRateModel
+    const appleHealthQtModel = this.OxygenSaturationModel
     const query = new GetLatestAppleHealthQtQuery(appleHealthQtModel,userId);
-    return this.hearRateService.getLatestAppleHealthQt(query);
+    return this.oxygenSaturationService.getLatestAppleHealthQt(query);
   }
 
 }
