@@ -44,7 +44,7 @@ export class SleepController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ): Promise<any> {
-    const query = new GetSleepQuery(userId, startDate, endDate, source, page, limit);
+    const query = new GetSleepQuery(userId, page?page:1, limit?limit:10, startDate, endDate, source);
     return this.sleepService.getSleep(query);
   }
 

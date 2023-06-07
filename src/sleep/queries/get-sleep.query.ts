@@ -21,11 +21,12 @@ export class GetSleepQuery {
 
   constructor(
     userId: string,
+    page?: number,
+    limit?: number,
     startDate?: string,
     endDate?: string,
     source?: string,
-    page?: number,
-    limit?: number,
+    
   ) {
     this.userId = userId;
     this.startDate = startDate;

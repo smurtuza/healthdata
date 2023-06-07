@@ -52,7 +52,7 @@ export class OxygenSaturationController {
     @Query('limit') limit: number,
   ): Promise<any> {
     const appleHealthQtModel = this.OxygenSaturationModel
-    const query = new GetAppleHealthQtQuery(appleHealthQtModel,userId, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source, page, limit);
+    const query = new GetAppleHealthQtQuery(appleHealthQtModel,userId, page?page:1, limit?limit:10, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source);
     return this.oxygenSaturationService.getAppleHealthQt(query);
   }
 

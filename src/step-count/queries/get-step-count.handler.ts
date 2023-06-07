@@ -28,17 +28,20 @@ export class GetStepCountHandler implements IQueryHandler<GetStepCountQuery> {
     if (source) {
       filter.source = source;
     }
-
-    const queryBuilder = this.stepCountModel
+    const total = await this.stepCountModel.countDocuments(filter);
+    const data = await this.stepCountModel
       .find(filter)
-      .sort({ date: 'asc' });
+      .sort({ date: 'asc' })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
 
-    if (page && limit) {
-      const skip = (page - 1) * limit;
-      queryBuilder.skip(skip).limit(limit);
-    }
-
-    return queryBuilder.exec();
+    return {
+      total,
+      page,
+      limit,
+      data,
+    };
   }
 }
 

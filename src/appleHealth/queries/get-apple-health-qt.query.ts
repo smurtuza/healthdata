@@ -5,11 +5,12 @@ export class GetAppleHealthQtQuery {
     constructor(
       public readonly appleHealthQtModel:Model<any>,
       public readonly userId: string,
+      public readonly page?: number,
+      public readonly limit?: number,
       public readonly startDate?: Date,
       public readonly endDate?: Date,
       public readonly source?: string,
-      public readonly page?: number,
-      public readonly limit?: number,
+     
     ) {}
   }
   

@@ -30,9 +30,10 @@ export class GetSleepHandler implements IQueryHandler<GetSleepQuery> {
     const total = await this.sleepModel.countDocuments(filters);
     const data = await this.sleepModel
       .find(filters)
+      .sort({ date: 'desc' })
       .skip((page - 1) * limit)
       .limit(limit)
-      .sort({ date: 'desc' });
+      .exec();
 
     return {
       total,

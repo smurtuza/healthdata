@@ -50,7 +50,7 @@ export class CaloriesController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ): Promise<any> {
-    const query = new GetAppleHealthQtQuery(this.caloriesModel ,userId, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source, page, limit);
+    const query = new GetAppleHealthQtQuery(this.caloriesModel ,userId, page?page:1, limit?limit:10, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source);
     return this.caloriesService.getAppleHealthQt(query);
   }
 

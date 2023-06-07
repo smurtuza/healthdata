@@ -49,7 +49,7 @@ export class StepCountController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ): Promise<any> {
-    const query = new GetStepCountQuery(userId, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source, page, limit);
+    const query = new GetStepCountQuery(userId,page?page:1, limit?limit:10, startDate ? new Date(startDate) : undefined, endDate ? new Date(endDate) : undefined, source);
     return this.stepCountService.getStepCount(query);
   }
 

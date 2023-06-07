@@ -31,16 +31,18 @@ export class GetAppleHealthQtHandler implements IQueryHandler<GetAppleHealthQtQu
       filter.source = source;
     }
 
-    const queryBuilder = appleHealthQtModel
+    const total = await appleHealthQtModel.countDocuments(filter);
+    const data = await appleHealthQtModel
       .find(filter)
-      .sort({ date: 'asc' });
+      .sort({ date: 'asc' })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
 
-    if (page && limit) {
-      const skip = (page - 1) * limit;
-      queryBuilder.skip(skip).limit(limit);
-    }
-
-    return queryBuilder.exec();
+    return { total,
+      page,
+      limit,
+      data,}
   }
 }
 
