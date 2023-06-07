@@ -1,4 +1,3 @@
-// src/sleep/queries/get-sleep.query.ts
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GetSleepQuery {
@@ -34,5 +33,14 @@ export class GetSleepQuery {
     this.source = source;
     this.page = page;
     this.limit = limit;
+  }
+}
+
+
+export class GetLatestSleepQuery {
+  @ApiProperty()
+  userId: string;
+  constructor( userId: string) {
+    this.userId = userId
   }
 }

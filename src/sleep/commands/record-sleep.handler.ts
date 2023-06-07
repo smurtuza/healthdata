@@ -2,14 +2,15 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Sleep, SleepDocument } from '../sleep.schema';
 import { RecordSleepCommand } from './record-sleep.command';
+
+import { SleepSchema } from '../sleep.schema';
 import { SleepDto } from '../dto/sleep.dto';
 
 @CommandHandler(RecordSleepCommand)
 export class RecordSleepHandler implements ICommandHandler<RecordSleepCommand> {
   constructor(
-    @InjectModel(Sleep.name) private readonly sleepModel: Model<SleepDocument>,
+    @InjectModel("Sleep") private readonly sleepModel: Model<any>,
   ) {}
 
   async execute(command: RecordSleepCommand): Promise<void> {

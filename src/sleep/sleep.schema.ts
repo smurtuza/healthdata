@@ -1,26 +1,11 @@
-// src/sleep/sleep.schema.ts
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { SleepDto } from './dto/sleep.dto';
+import * as mongoose from 'mongoose';
 
-export type SleepDocument = Sleep & Document;
-
-@Schema()
-export class Sleep {
-  @Prop()
-  date: string;
-
-  @Prop()
-  hours: number;
-
-  @Prop()
-  quality: string;
-
-  @Prop()
-  userId: string;
-
-  @Prop()
-  source: string;
-}
-
-export const SleepSchema = SchemaFactory.createForClass(Sleep);
+export const SleepSchema = new mongoose.Schema({
+  userId: {type:String, requited:true},
+  source: String,
+  sleepHours: Number,
+  startDate: {type:Date, required: true},
+  endDate: {type:Date, reqired:true},
+  value: { type: String, required: true },
+  
+});

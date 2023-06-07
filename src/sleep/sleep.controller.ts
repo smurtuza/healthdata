@@ -1,11 +1,14 @@
 // src/sleep/sleep.controller.ts
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, ValidationPipe } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { SleepDto } from './dto/sleep.dto';
+import { RecordSleepDto } from './dto/record.sleep.dto';
 import { RecordSleepCommand } from './commands/record-sleep.command';
-import { GetSleepQuery } from './queries/get-sleep.query';
+import { GetSleepQuery , GetLatestSleepQuery} from './queries/get-sleep.query';
 import { ApiTags, ApiOperation, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { SleepService } from './sleep.service';
+import { SleepSchema } from './sleep.schema';
+
 
 @ApiTags('sleep')
 @Controller('sleep')
@@ -16,11 +19,12 @@ export class SleepController {
     private readonly sleepService: SleepService,
   ) {}
 
-  @ApiBody({ type: SleepDto, description: 'Sleep Data' ,isArray:true})
+  @ApiBody({ type: RecordSleepDto, description: 'Sleep Data' })
   @Post()
-  async recordSleep(@Body() sleepData: SleepDto[]): Promise<void> {
-    const userId = 'user123'; // Replace with your authentication logic to get the user ID
-    const command = new RecordSleepCommand(userId, sleepData);
+  async recordSleep(@Body(ValidationPipe) body: RecordSleepDto): Promise<void> {
+    const {userId, data} = body
+    // const userId = 'user123'; // Replace with your authentication logic to get the user ID
+    const command = new RecordSleepCommand(userId, data);
     await this.commandBus.execute(command);
   }
 
@@ -43,4 +47,15 @@ export class SleepController {
     const query = new GetSleepQuery(userId, startDate, endDate, source, page, limit);
     return this.sleepService.getSleep(query);
   }
+
+  @ApiOperation({ summary: 'Get Latest sleep data' })
+  @ApiQuery({ name: 'userId', required: true })
+  @Get("/latest")
+  async getLatestSleep(
+    @Query('userId') userId: string,
+  ): Promise<any> {
+    const query = new GetLatestSleepQuery(userId);
+    return this.sleepService.getLatestSleep(query);
+  }
+
 }

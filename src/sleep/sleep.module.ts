@@ -6,7 +6,7 @@ import { SleepSchema } from './sleep.schema';
 import { RecordSleepHandler } from './commands/record-sleep.handler';
 import { RecordSleepCommand } from './commands/record-sleep.command';
 import {GetSleepQuery} from './queries/get-sleep.query';
-import { GetSleepHandler } from './queries/get-sleep.handler';
+import { GetSleepHandler, GetLatestSleepHandler } from './queries/get-sleep.handler';
 import { SleepService } from './sleep.service';
 
 @Module({
@@ -16,6 +16,7 @@ import { SleepService } from './sleep.service';
         RecordSleepHandler,
         RecordSleepCommand,
         GetSleepHandler,
+        GetLatestSleepHandler,
         GetSleepQuery,],
   })
 export class SleepModule {}
