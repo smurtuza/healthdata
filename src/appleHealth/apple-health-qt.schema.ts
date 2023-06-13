@@ -6,5 +6,6 @@ export const AppleHealthQtSchema = new mongoose.Schema({
   startDate: {type:Date, required: true},
   endDate: {type:Date, reqired:true},
   value: { type: Number, required: true },
+  source:{type:String, default:"Apple Health"},
   unit:{type:String}
 });

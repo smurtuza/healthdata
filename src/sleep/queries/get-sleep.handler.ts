@@ -16,11 +16,12 @@ export class GetSleepHandler implements IQueryHandler<GetSleepQuery> {
     const filters: any = { userId };
 
     if (startDate && endDate) {
-      filters.date = { $gte: new Date(startDate), $lte: new Date(endDate) };
-    } else if (startDate) {
-      filters.date = { $gte: new Date(startDate) };
-    } else if (endDate) {
-      filters.date = { $lte: new Date(endDate) };
+      if (startDate) {
+        filters.startDate = { $gte: startDate };
+      }
+      if (endDate) {
+        filters.startDate = { ...filters.startDate, $lte: endDate };
+      }
     }
 
     if (source) {
@@ -30,7 +31,7 @@ export class GetSleepHandler implements IQueryHandler<GetSleepQuery> {
     const total = await this.sleepModel.countDocuments(filters);
     const data = await this.sleepModel
       .find(filters)
-      .sort({ date: 'desc' })
+      .sort({ startDate: 'desc' })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();

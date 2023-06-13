@@ -15,22 +15,21 @@ export class GetBpHandler implements IQueryHandler<GetBpQuery> {
     const filter: any = {
       userId,
     };
-
+    if (startDate && endDate) {
     if (startDate) {
-      filter.date = { $gte: startDate };
+      filter.startDate = { $gte: startDate };
     }
-
     if (endDate) {
-      filter.date = { ...filter.date, $lte: endDate };
+      filter.startDate = { ...filter.startDate, $lte: endDate };
     }
-
+    }
     if (source) {
       filter.source = source;
     }
     const total = await this.BpModel.countDocuments(filter);
     const data = await this.BpModel
       .find(filter)
-      .sort({ date: 'desc' })
+      .sort({ startDate: 'desc' })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();

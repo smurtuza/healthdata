@@ -17,12 +17,13 @@ export class GetStepCountHandler implements IQueryHandler<GetStepCountQuery> {
       userId,
     };
 
-    if (startDate) {
-      filter.date = { $gte: startDate };
-    }
-
-    if (endDate) {
-      filter.date = { ...filter.date, $lte: endDate };
+    if (startDate && endDate) {
+      if (startDate) {
+        filter.startDate = { $gte: startDate };
+      }
+      if (endDate) {
+        filter.startDate = { ...filter.startDate, $lte: endDate };
+      }
     }
 
     if (source) {
@@ -31,7 +32,7 @@ export class GetStepCountHandler implements IQueryHandler<GetStepCountQuery> {
     const total = await this.stepCountModel.countDocuments(filter);
     const data = await this.stepCountModel
       .find(filter)
-      .sort({ date: 'asc' })
+      .sort({ startDate: 'desc' })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();

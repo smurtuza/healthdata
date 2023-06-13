@@ -23,4 +23,8 @@ export class AppleHealthQtDto {
   @ApiProperty({ example: 'kCal'})
   @IsString()
   unit: { type: String };
+
+  @ApiProperty({ example: 'Apple Health'})
+  @IsString()
+  source:{type:String}
 }
