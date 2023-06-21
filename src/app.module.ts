@@ -8,11 +8,12 @@ import { CaloriesModule } from './appleHealth/calories/calories.module';
 import { OxygenSaturationModule } from './appleHealth/oxygen-saturation/oxygen-saturation.module';
 import { HeartRateModule } from './appleHealth/heart-rate/heart-rate.module';
 import { BloodGlucoseModule } from './appleHealth/blood-glucose/blood-glucose.module';
+import { IngestModule } from './ingest/ingest.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb+srv://microuser:microuser@cluster0.szm8xo6.mongodb.net/sleep_db'),
-    CqrsModule,SleepModule,StepCountModule,CaloriesModule,OxygenSaturationModule,HeartRateModule,BloodGlucoseModule,
+    CqrsModule,SleepModule,StepCountModule,CaloriesModule,OxygenSaturationModule,HeartRateModule,BloodGlucoseModule,IngestModule
   ],
   controllers: [],
   providers: [],
