@@ -5,7 +5,7 @@ import { IngestPayloadHandler } from './commands/ingest-payload.handler';
 import { GetTimeSeriesDataHandler } from './queries/get-time-series-data.handler';
 import { IngestController } from './ingest.controller';
 import { MqttService } from './mqtt/mqtt.service';
-import { SyllaDBService } from './sylladb/sylladb.service';
+import { ScylladbService } from './scylladb/scylladb.service';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { SyllaDBService } from './sylladb/sylladb.service';
     MqttService,
     IngestPayloadHandler,
     GetTimeSeriesDataHandler,
-    SyllaDBService
+    ScylladbService
   ],
 })
 export class IngestModule {}
