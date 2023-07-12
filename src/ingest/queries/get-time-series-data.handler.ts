@@ -7,20 +7,7 @@ import { Client } from 'cassandra-driver';
 
 @QueryHandler(GetTimeSeriesDataQuery)
 export class GetTimeSeriesDataHandler implements IQueryHandler<GetTimeSeriesDataQuery> {
-  constructor(private readonly scylladbService: ScylladbService) {}
-
-  // private client: Client;
-
-  // constructor() {
-  //   this.client = new Client({
-  //     contactPoints: ['15.207.62.22'], // Replace with your Cassandra contact points
-  //     localDataCenter: 'datacenter1', // Replace with your Cassandra data center
-  //     credentials: { username: "data_reader", password: "m$gzV498c@"}, 
-  //     keyspace: 'securra_test', 
-  //   });
-  //   this.client.connect();
-  // }
-
+  constructor(private readonly scylladbService: ScylladbService) { }
   async execute(query: GetTimeSeriesDataQuery): Promise<any> {
     const { userId, paramName, paramType, startTimestamp, endTimestamp, page, pageSize } = query;
     const client = this.scylladbService.getClient();
@@ -32,13 +19,16 @@ export class GetTimeSeriesDataHandler implements IQueryHandler<GetTimeSeriesData
       ${paramType ? 'AND paramtype = ?' : ''}
       ${startTimestamp ? 'AND timestamp >= ?' : ''}
       ${endTimestamp ? 'AND timestamp <= ?' : ''}
-      ORDER BY timestamp DESC
+      ORDER BY date_time DESC
       LIMIT ?
       ALLOW FILTERING
     `;
 
-    const params: any[] = [userId, paramName];
+    const params: any[] = [userId];
 
+    if (paramName) {
+      params.push(paramName)
+    }
     if (paramType) {
       params.push(paramType);
     }

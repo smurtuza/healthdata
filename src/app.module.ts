@@ -12,10 +12,10 @@ import { IngestModule } from './ingest/ingest.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://microuser:microuser@cluster0.szm8xo6.mongodb.net/sleep_db'),
-    CqrsModule,SleepModule,StepCountModule,CaloriesModule,OxygenSaturationModule,HeartRateModule,BloodGlucoseModule,IngestModule
+    MongooseModule.forRoot('mongodb+srv://Staropdqa:JHzXWsUzkrwYfYzx@opd.nginyqx.mongodb.net/appleHealth'),
+    CqrsModule, SleepModule, StepCountModule, CaloriesModule, OxygenSaturationModule, HeartRateModule, BloodGlucoseModule, IngestModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
